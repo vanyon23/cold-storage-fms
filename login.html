@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login · ColdStore FMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="login-page">
+  <form class="login-card" id="loginForm">
+    <div class="brand big"><span class="logo">❄</span> ColdStore FMS</div>
+    <p class="muted">Cold Storage Food Management System</p>
+    <label>Username <input name="username" required autofocus /></label>
+    <label>Password <input name="password" type="password" required /></label>
+    <p class="error" id="err"></p>
+    <button class="btn primary" type="submit">Log in</button>
+    <p class="hint">Demo: <b>admin / admin123</b> or <b>staff / staff123</b></p>
+  </form>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const body = Object.fromEntries(new FormData(e.target));
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) location.href = '/';
+      else document.getElementById('err').textContent = (await res.json()).error;
+    });
+  </script>
+</body>
+</html>
